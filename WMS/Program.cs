@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using MiddlewareDemo.Auth;
 using MiddlewareDemo.Data;
 using MiddlewareDemo.Helper;
+using MiddlewareDemo.Services;
 using NLog.Web;
 using Scalar.AspNetCore;
 using System.Text;
@@ -35,6 +36,8 @@ builder.Services.AddControllers();
 // JWT 认证配置                                                                                                       
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddSingleton<TokenHelper>();
+// 角色菜单权限服务（按请求作用域，依赖 DbContext）
+builder.Services.AddScoped<UserMenuService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -117,10 +120,10 @@ app.Use(async (context, next) =>
 });
 
 // 启动时自动应用未执行的数据库迁移：首次启动自动建表并写入初始数据，以后发新版自动更新表结构
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate();
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+//    db.Database.Migrate();
+//}
 
 app.Run();

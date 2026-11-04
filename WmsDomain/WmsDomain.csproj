@@ -1,9 +1,19 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <!-- Muse.cs 语法损坏（构造函数未闭合）且整体依赖不存在的 SqlSugar 实体，
+       已重写为 MuseService.cs（EF Core），此处排除原文件 -->
+  <ItemGroup>
+    <Compile Remove="UserMuse\Muse.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WMS\WMS.WebApi.csproj" />
+  </ItemGroup>
 
 </Project>

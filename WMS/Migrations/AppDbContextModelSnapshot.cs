@@ -23,9 +23,11 @@ internal class AppDbContextModelSnapshot : ModelSnapshot
 			b.Property<string>("Description").HasMaxLength(200).HasColumnType("character varying(200)");
 			b.Property<string>("Icon").HasMaxLength(50).HasColumnType("character varying(50)");
 			b.Property<bool>("KeepAlive").HasColumnType("boolean");
+			b.Property<string>("LevelCode").HasMaxLength(50).HasColumnType("character varying(50)");
 			b.Property<string>("Name").IsRequired().HasMaxLength(50)
 				.HasColumnType("character varying(50)");
 			b.Property<int?>("ParentId").HasColumnType("integer");
+			b.Property<string>("ParentName").HasMaxLength(50).HasColumnType("character varying(50)");
 			b.Property<string>("Path").IsRequired().HasMaxLength(200)
 				.HasColumnType("character varying(200)");
 			b.Property<bool>("Show").HasColumnType("boolean");
@@ -299,12 +301,17 @@ internal class AppDbContextModelSnapshot : ModelSnapshot
 			b.Property<int>("Id").ValueGeneratedOnAdd().HasColumnType("integer");
 			b.Property<int>("Id").UseIdentityByDefaultColumn();
 			b.Property<DateTime>("CreateTime").HasColumnType("timestamp with time zone");
+			b.Property<string>("Email").HasMaxLength(100).HasColumnType("character varying(100)");
 			b.Property<string>("Name").HasMaxLength(50).HasColumnType("character varying(50)");
 			b.Property<string>("Password").IsRequired().HasMaxLength(200)
 				.HasColumnType("character varying(200)");
+			b.Property<string>("Phone").HasMaxLength(20).HasColumnType("character varying(20)");
+			b.Property<int?>("RoleId").HasColumnType("integer");
+			b.Property<bool>("State").HasColumnType("boolean");
 			b.Property<string>("UserName").IsRequired().HasMaxLength(50)
 				.HasColumnType("character varying(50)");
 			b.HasKey("Id");
+			b.HasIndex("RoleId");
 			b.HasIndex("UserName").IsUnique();
 			b.ToTable("Users");
 			b.HasData(new
@@ -315,6 +322,59 @@ internal class AppDbContextModelSnapshot : ModelSnapshot
 				Password = "123456",
 				UserName = "admin"
 			});
+		});
+
+		// ---- 角色权限体系（AddRoleMenuPermission 迁移新增）----
+		modelBuilder.Entity("MiddlewareDemo.Entities.Role", (EntityTypeBuilder b) =>
+		{
+			b.Property<int>("Id").ValueGeneratedOnAdd().HasColumnType("integer");
+			b.Property<int>("Id").UseIdentityByDefaultColumn();
+			b.Property<string>("Code").IsRequired().HasMaxLength(50).HasColumnType("character varying(50)");
+			b.Property<string>("Name").IsRequired().HasMaxLength(50).HasColumnType("character varying(50)");
+			b.Property<string>("Description").HasMaxLength(200).HasColumnType("character varying(200)");
+			b.Property<bool>("State").HasColumnType("boolean");
+			b.Property<DateTime>("CreateTime").HasColumnType("timestamp with time zone");
+			b.HasKey("Id");
+			b.HasIndex("Code").IsUnique();
+			b.ToTable("Roles");
+		});
+
+		modelBuilder.Entity("MiddlewareDemo.Entities.RoleMenu", (EntityTypeBuilder b) =>
+		{
+			b.Property<int>("Id").ValueGeneratedOnAdd().HasColumnType("integer");
+			b.Property<int>("Id").UseIdentityByDefaultColumn();
+			b.Property<int>("RoleId").HasColumnType("integer");
+			b.Property<int>("MenuId").HasColumnType("integer");
+			b.Property<bool>("Display").HasColumnType("boolean");
+			b.Property<bool>("Insert").HasColumnType("boolean");
+			b.Property<bool>("Update").HasColumnType("boolean");
+			b.Property<bool>("Delete").HasColumnType("boolean");
+			b.Property<bool>("Save").HasColumnType("boolean");
+			b.Property<bool>("Search").HasColumnType("boolean");
+			b.Property<bool>("Export").HasColumnType("boolean");
+			b.Property<bool>("Print").HasColumnType("boolean");
+			b.Property<bool>("Import").HasColumnType("boolean");
+			b.Property<string>("Operates").HasMaxLength(500).HasColumnType("character varying(500)");
+			b.Property<DateTime>("CreateTime").HasColumnType("timestamp with time zone");
+			b.HasKey("Id");
+			b.HasIndex("MenuId");
+			b.HasIndex("RoleId", "MenuId").IsUnique();
+			b.ToTable("RoleMenus");
+		});
+
+		modelBuilder.Entity("MiddlewareDemo.Entities.MenuPower", (EntityTypeBuilder b) =>
+		{
+			b.Property<int>("MenuPowerId").ValueGeneratedOnAdd().HasColumnType("integer");
+			b.Property<int>("MenuPowerId").UseIdentityByDefaultColumn();
+			b.Property<int>("MenuId").HasColumnType("integer");
+			b.Property<string>("Code").IsRequired().HasMaxLength(50).HasColumnType("character varying(50)");
+			b.Property<string>("Name").IsRequired().HasMaxLength(50).HasColumnType("character varying(50)");
+			b.Property<string>("Description").HasMaxLength(200).HasColumnType("character varying(200)");
+			b.Property<int>("SortOrder").HasColumnType("integer");
+			b.Property<DateTime>("CreateTime").HasColumnType("timestamp with time zone");
+			b.HasKey("MenuPowerId");
+			b.HasIndex("MenuId");
+			b.ToTable("MenuPowers");
 		});
 	}
 }

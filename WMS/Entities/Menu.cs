@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -41,4 +42,18 @@ public class Menu
 	public string? Description { get; set; }
 
 	public DateTime CreateTime { get; set; } = DateTime.Now;
+
+	/// <summary>层级编码，用于同级排序与树形展示（如 1、1.1、1.1.1）</summary>
+	[MaxLength(50)]
+	public string? LevelCode { get; set; }
+
+	/// <summary>父级菜单名称，冗余字段，减少前端请求</summary>
+	[MaxLength(50)]
+	public string? ParentName { get; set; }
+
+	/// <summary>该菜单下的角色授权记录</summary>
+	public List<RoleMenu> RoleMenus { get; set; } = new();
+
+	/// <summary>该菜单下的权限点</summary>
+	public List<MenuPower> MenuPowers { get; set; } = new();
 }
