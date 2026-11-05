@@ -1,7 +1,14 @@
-## .NET
-bin/
-obj/
+# Build results
+[Dd]ebug/
+[Rr]elease/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio
 .vs/
+.vscode/
 *.user
 *.suo
 *.cache
@@ -19,17 +26,14 @@ node_modules/
 frontend/dist/
 frontend/.vite/
 
-## IDE
-.idea/
-*.swp
-*.swo
-*~
+# .NET
+dotnet-*.log
 
-## OS
-Thumbs.db
-Desktop.ini
-.DS_Store
-
-## Secrets
-appsettings.Production.json
-*.env.local
+# 恢复临时文件
+__restore_*
+__readable_*
+__rb_plaintext/
+__trae_hist_*
+__decompiled*/
+__encrypted_backup*/
+__verify_*

@@ -1,0 +1,8 @@
+﻿<Solution>
+  <Folder Name="/WMS/">
+    <Project Path="WMS/WMS.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/WmsDomain/">
+    <Project Path="WmsDomain/WmsDomain.csproj" />
+  </Folder>
+</Solution>
